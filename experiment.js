@@ -506,10 +506,17 @@ function handleInterviewSubmit() {
   submitAllData();
 }
 
+function formatKstTimestamp(date) {
+  const kst = new Date(date.getTime() + 9 * 60 * 60 * 1000);
+  const pad = (n) => String(n).padStart(2, '0');
+  return `${kst.getUTCFullYear()}-${pad(kst.getUTCMonth() + 1)}-${pad(kst.getUTCDate())} ` +
+         `${pad(kst.getUTCHours())}:${pad(kst.getUTCMinutes())}:${pad(kst.getUTCSeconds())}`;
+}
+
 function buildPayload() {
   const totalDuration = Date.now() - state.experimentStartTime;
   const payload = {
-    timestamp: new Date().toISOString(),
+    timestamp: formatKstTimestamp(new Date()),
     participant_id: state.participantId,
     ui_condition: state.condition,
     age: state.data.demographics.age,
