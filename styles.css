@@ -1,0 +1,410 @@
+/* =========================================================================
+ * styles.css
+ * 팀장님 예시 디자인 톤(메인색 #2c7da0) 계승 + 챗봇 UI 추가
+ * ========================================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Segoe UI', Roboto, sans-serif;
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 20px;
+  background: #f5f7fa;
+  color: #1f2933;
+  line-height: 1.55;
+}
+
+.container {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 32px 28px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* ===== 진행률 ===== */
+.progress-wrap {
+  margin-bottom: 18px;
+}
+.progress-bar {
+  height: 6px;
+  background: #e6ebf2;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: #2c7da0;
+  transition: width 0.3s ease;
+}
+.progress-label {
+  font-size: 0.8rem;
+  color: #6c757d;
+  margin-top: 6px;
+}
+
+/* ===== 페이지 ===== */
+.page {
+  display: none;
+}
+.page.active {
+  display: block;
+}
+
+h1, h2, h3 {
+  color: #1f2933;
+}
+h1 { font-size: 1.6rem; margin-top: 0; }
+h2 { font-size: 1.25rem; margin-top: 0; }
+h3 { font-size: 1.05rem; }
+
+p { margin: 10px 0; }
+small { color: #6c757d; }
+
+/* ===== 시나리오 박스 ===== */
+.scenario-box {
+  background: #eef2ff;
+  border-radius: 16px;
+  padding: 14px 18px;
+  margin: 18px 0;
+  font-weight: 500;
+}
+.scenario-box .scenario-label {
+  display: inline-block;
+  background: #2c7da0;
+  color: #fff;
+  font-size: 0.75rem;
+  padding: 2px 10px;
+  border-radius: 10px;
+  margin-right: 8px;
+  vertical-align: middle;
+  letter-spacing: 0.5px;
+}
+
+/* ===== 챗봇 메시지 컨테이너 ===== */
+.ai-message {
+  background: #ffffff;
+  border: 1px solid #e1e7ee;
+  border-radius: 18px;
+  overflow: hidden;
+  margin: 16px 0 22px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+.ai-message-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #2c7da0 0%, #468cad 100%);
+  color: #fff;
+}
+.ai-avatar {
+  width: 32px;
+  height: 32px;
+  background: #fff;
+  color: #2c7da0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.5px;
+}
+.ai-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  flex: 1;
+}
+.ai-model-tag {
+  font-size: 0.72rem;
+  background: rgba(255, 255, 255, 0.18);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 500;
+}
+.ai-message-body {
+  padding: 18px 20px 14px;
+  min-height: 120px;
+}
+
+/* ===== 청크 (챗봇 응답 단위) ===== */
+.ai-chunk {
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  border-left: 4px solid #2c7da0;
+  background: #f8fafe;
+  border-radius: 10px;
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+.ai-chunk:last-child {
+  margin-bottom: 6px;
+}
+.ai-chunk-tag {
+  font-weight: 700;
+  color: #2c7da0;
+  font-size: 0.82rem;
+  margin-bottom: 6px;
+  letter-spacing: 0.3px;
+}
+.ai-chunk-text {
+  font-size: 0.98rem;
+  color: #1f2933;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  word-break: keep-all;
+}
+.chunk-faded {
+  opacity: 0.35;
+}
+
+/* ===== 타이핑 커서 ===== */
+.typing-cursor {
+  display: inline-block;
+  width: 7px;
+  height: 1.05em;
+  background: #2c7da0;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  border-radius: 1px;
+  animation: caret-blink 1s steps(1) infinite;
+}
+@keyframes caret-blink {
+  0%, 50%   { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
+
+/* ===== "응답 중..." 인디케이터 ===== */
+.typing-indicator {
+  display: none;
+  gap: 5px;
+  align-items: center;
+  padding: 6px 4px 2px;
+}
+.typing-indicator.active {
+  display: inline-flex;
+}
+.typing-indicator span {
+  width: 7px;
+  height: 7px;
+  background: #b3c6d2;
+  border-radius: 50%;
+  animation: dot-pulse 1.3s ease-in-out infinite;
+}
+.typing-indicator span:nth-child(2) { animation-delay: 0.18s; }
+.typing-indicator span:nth-child(3) { animation-delay: 0.36s; }
+@keyframes dot-pulse {
+  0%, 80%, 100% { opacity: 0.35; transform: scale(0.85); }
+  40%           { opacity: 1;    transform: scale(1.1); }
+}
+
+/* ===== 버튼 ===== */
+button, .btn {
+  background: #2c7da0;
+  color: #ffffff;
+  border: none;
+  padding: 11px 22px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-family: inherit;
+  margin-right: 10px;
+  margin-top: 8px;
+  transition: background 0.2s ease, opacity 0.2s ease;
+}
+button:hover:not(:disabled) {
+  background: #1f5e7a;
+}
+button:disabled {
+  background: #b3c6d2;
+  cursor: not-allowed;
+  opacity: 0.85;
+}
+.btn-secondary {
+  background: #6c757d;
+}
+.btn-secondary:hover:not(:disabled) {
+  background: #4f565d;
+}
+.btn-row {
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* ===== 입력 ===== */
+input[type="number"], input[type="text"] {
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid #cdd5dd;
+  font-size: 0.95rem;
+  font-family: inherit;
+  background: #fff;
+}
+input[type="number"] {
+  width: 100px;
+  text-align: center;
+}
+
+textarea {
+  width: 100%;
+  min-height: 90px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid #cdd5dd;
+  font-size: 0.95rem;
+  font-family: inherit;
+  resize: vertical;
+  background: #fff;
+}
+
+label {
+  cursor: pointer;
+}
+
+/* ===== 폼 그룹 ===== */
+.form-group {
+  margin: 18px 0;
+}
+.form-group > label.field-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+/* ===== 척도(Likert) ===== */
+.likert {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin-top: 6px;
+}
+.likert label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.92rem;
+  background: #f4f7fa;
+  padding: 6px 12px;
+  border-radius: 14px;
+  border: 1px solid #e1e7ee;
+}
+.likert label:hover {
+  background: #eaf1f6;
+}
+.likert input[type="radio"] {
+  margin: 0;
+  accent-color: #2c7da0;
+}
+
+.likert-7 label {
+  min-width: 38px;
+  justify-content: center;
+}
+
+.likert-anchor {
+  font-size: 0.8rem;
+  color: #6c757d;
+  margin-top: 4px;
+}
+
+/* ===== 동의서 ===== */
+.consent-box {
+  background: #f4f7fa;
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin: 16px 0;
+  font-size: 0.95rem;
+  border: 1px solid #e1e7ee;
+}
+.consent-check {
+  margin-top: 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.consent-check input[type="checkbox"] {
+  margin-top: 3px;
+  width: 18px;
+  height: 18px;
+  accent-color: #2c7da0;
+}
+
+/* ===== 자극 헤더 ===== */
+.stim-progress {
+  font-size: 0.85rem;
+  background: #eef2fa;
+  padding: 6px 14px;
+  border-radius: 30px;
+  display: inline-block;
+  color: #2c7da0;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* ===== 디브리핑 ===== */
+.debrief-status {
+  background: #eaf6ee;
+  border: 1px solid #b4dcc1;
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin: 18px 0;
+  color: #1f6135;
+  font-weight: 500;
+  white-space: pre-wrap;
+}
+.debrief-status.error {
+  background: #fdecec;
+  border-color: #f1b9b9;
+  color: #8a2a2a;
+}
+
+/* ===== 오류 메시지 ===== */
+.error-msg {
+  color: #c0392b;
+  font-size: 0.88rem;
+  margin-top: 6px;
+  min-height: 1.1em;
+}
+
+/* ===== 디버그 패널 ===== */
+.debug-panel {
+  background: #1f2933;
+  color: #c9d6df;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-family: ui-monospace, 'Cascadia Code', Consolas, monospace;
+  font-size: 0.82rem;
+  margin-bottom: 18px;
+  white-space: pre-wrap;
+}
+
+/* ===== 모바일 차단 ===== */
+.mobile-block {
+  display: none;
+  text-align: center;
+  padding: 40px 24px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+.mobile-block h2 {
+  color: #2c7da0;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 767px) {
+  .container { display: none; }
+  .mobile-block { display: block; }
+}
+
+footer {
+  text-align: center;
+  font-size: 0.78rem;
+  color: #6c757d;
+  margin-top: 30px;
+}
