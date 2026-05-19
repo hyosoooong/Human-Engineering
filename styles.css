@@ -383,23 +383,73 @@ label {
   white-space: pre-wrap;
 }
 
-/* ===== 모바일 차단 ===== */
-.mobile-block {
-  display: none;
-  text-align: center;
-  padding: 40px 24px;
-  background: #fff;
-  border-radius: 20px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-}
-.mobile-block h2 {
-  color: #2c7da0;
-  margin-bottom: 16px;
-}
-
+/* ===== 모바일 반응형 ===== */
 @media (max-width: 767px) {
-  .container { display: none; }
-  .mobile-block { display: block; }
+  body {
+    margin: 0;
+    padding: 10px;
+  }
+  .container {
+    padding: 22px 18px;
+    border-radius: 14px;
+  }
+  h1 { font-size: 1.4rem; }
+  h2 { font-size: 1.15rem; }
+
+  /* 좁은 화면에서도 척도가 줄바꿈되도록 */
+  .likert {
+    gap: 6px 8px;
+  }
+  .likert label {
+    padding: 6px 10px;
+    font-size: 0.88rem;
+  }
+  .likert-7 label {
+    min-width: 34px;
+  }
+
+  /* 터치 영역 확보 (iOS 권장 44px) */
+  button, .btn {
+    padding: 12px 20px;
+    min-height: 44px;
+    margin-right: 6px;
+  }
+
+  /* 챗봇 메시지 영역 패딩 축소 */
+  .ai-message-body {
+    padding: 14px 14px 10px;
+    min-height: 100px;
+  }
+  .ai-chunk {
+    padding: 10px 12px;
+  }
+  .ai-chunk-text {
+    font-size: 0.95rem;
+  }
+  .ai-message-header {
+    padding: 10px 14px;
+  }
+  .ai-avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 0.72rem;
+  }
+  .ai-name {
+    font-size: 0.88rem;
+  }
+
+  .scenario-box {
+    padding: 12px 14px;
+    font-size: 0.95rem;
+  }
+
+  input[type="number"] {
+    width: 100%;
+    max-width: 200px;
+  }
+  textarea {
+    min-height: 100px;
+  }
 }
 
 footer {

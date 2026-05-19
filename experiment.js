@@ -153,13 +153,6 @@ function showPage(pageId) {
  * 5. 초기화
  * ========================================================= */
 function init() {
-  // 모바일 차단 (CSS로 처리되지만 안전망)
-  if (window.innerWidth < 768) {
-    document.querySelector('.container').style.display = 'none';
-    document.querySelector('.mobile-block').style.display = 'block';
-    return;
-  }
-
   // 새로고침/이탈 방지
   window.addEventListener('beforeunload', (e) => {
     if (state.experimentStartTime && !state.experimentCompleted) {
