@@ -64,24 +64,34 @@ h3 { font-size: 1.05rem; }
 p { margin: 10px 0; }
 small { color: #6c757d; }
 
-/* ===== 시나리오 박스 ===== */
+/* ===== 시나리오 박스 (참가자가 가장 먼저 인지하도록 강조) ===== */
 .scenario-box {
-  background: #eef2ff;
-  border-radius: 16px;
-  padding: 14px 18px;
+  background: #fff7ed;
+  border: 2px solid #f59e0b;
+  border-left: 8px solid #f59e0b;
+  border-radius: 14px;
+  padding: 16px 20px;
   margin: 18px 0;
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #7c4a03;
+  line-height: 1.6;
+  box-shadow: 0 2px 10px rgba(245, 158, 11, 0.18);
 }
 .scenario-box .scenario-label {
   display: inline-block;
-  background: #2c7da0;
+  background: #f59e0b;
   color: #fff;
-  font-size: 0.75rem;
-  padding: 2px 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 3px 12px;
   border-radius: 10px;
-  margin-right: 8px;
+  margin-right: 10px;
   vertical-align: middle;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
+}
+.scenario-box #scenarioText {
+  vertical-align: middle;
 }
 
 /* ===== 챗봇 메시지 컨테이너 ===== */
@@ -131,31 +141,19 @@ small { color: #6c757d; }
   min-height: 120px;
 }
 
-/* ===== 청크 (챗봇 응답 단위) ===== */
+/* ===== 청크 (소제목 없이 줄글 형태로 연속 표시) ===== */
+/* 각 청크를 인라인으로 흘려 하나의 문단처럼 이어 읽히도록 함 */
 .ai-chunk {
-  margin-bottom: 14px;
-  padding: 12px 14px;
-  border-left: 4px solid #2c7da0;
-  background: #f8fafe;
-  border-radius: 10px;
-  transition: opacity 0.45s ease, transform 0.45s ease;
-}
-.ai-chunk:last-child {
-  margin-bottom: 6px;
-}
-.ai-chunk-tag {
-  font-weight: 700;
-  color: #2c7da0;
-  font-size: 0.82rem;
-  margin-bottom: 6px;
-  letter-spacing: 0.3px;
+  display: inline;
+  transition: opacity 0.45s ease;
 }
 .ai-chunk-text {
-  font-size: 0.98rem;
+  font-size: 1rem;
   color: #1f2933;
-  line-height: 1.65;
+  line-height: 1.85;
   white-space: pre-wrap;
   word-break: keep-all;
+  display: inline;
 }
 .chunk-faded {
   opacity: 0.35;
@@ -312,6 +310,48 @@ label {
   margin-top: 4px;
 }
 
+/* ===== 객관식 단일 선택 목록 (사후 1번 등) ===== */
+.radio-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+.radio-list label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  background: #f4f7fa;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid #e1e7ee;
+}
+.radio-list label:hover {
+  background: #eaf1f6;
+}
+.radio-list input[type="radio"] {
+  margin: 0;
+  accent-color: #2c7da0;
+}
+#interview1Other {
+  width: 100%;
+  margin-top: 8px;
+}
+
+/* ===== 안내 박스 (예: 흐린 문장 안내) ===== */
+.notice-box {
+  background: #eef6fb;
+  border: 1px solid #b9d9ea;
+  border-left: 5px solid #2c7da0;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin: 18px 0;
+  font-size: 0.92rem;
+  color: #234b5e;
+  line-height: 1.6;
+}
+
 /* ===== 동의서 ===== */
 .consent-box {
   background: #f4f7fa;
@@ -420,11 +460,10 @@ label {
     padding: 14px 14px 10px;
     min-height: 100px;
   }
-  .ai-chunk {
-    padding: 10px 12px;
-  }
+  /* 모바일에서 긴 줄글이 빽빽해 보이지 않도록 글자 크기·줄간격 조정 */
   .ai-chunk-text {
-    font-size: 0.95rem;
+    font-size: 0.92rem;
+    line-height: 1.75;
   }
   .ai-message-header {
     padding: 10px 14px;
@@ -438,10 +477,22 @@ label {
     font-size: 0.88rem;
   }
 
+  /* 강조한 시나리오 박스가 모바일에서도 잘 읽히도록 */
   .scenario-box {
-    padding: 12px 14px;
-    font-size: 0.95rem;
+    padding: 13px 15px;
+    font-size: 0.96rem;
+    line-height: 1.55;
+    border-left-width: 6px;
   }
+  .scenario-box .scenario-label {
+    display: inline-block;
+    margin-bottom: 6px;
+  }
+
+  /* 본문 단락·문항 글자도 한 단계 작게 */
+  p { font-size: 0.95rem; }
+  .form-group > label.field-label { font-size: 0.95rem; }
+  .radio-list label { font-size: 0.92rem; padding: 10px 12px; }
 
   input[type="number"] {
     width: 100%;

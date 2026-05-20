@@ -149,13 +149,14 @@ const CONFIG = {
 | `ui_condition` | `A` 또는 `B` |
 | `age` | 연령 |
 | `ai_usage_frequency` | 1(거의 안 함) ~ 5(거의 매일) |
-| `nfc_1` ~ `nfc_5` | NFC 5문항 (각 1~5). `nfc_3`, `nfc_4` 는 역채점 항목 |
+| `nfc_1` ~ `nfc_5` | NFC 5문항 (각 1~5). **모두 긍정문(정채점)** — 역채점 항목 없음. 출처: 단축형 인지욕구척도 K-NfC-S(김완석, 2007) |
 | `stimulus_order` | 제시 순서, 예: `S2,N1,S3,N3,S1,N2` |
 | `{ID}_response` | `yes` (활용함) / `no` (활용 안 함) |
 | `{ID}_total_time_ms` | 자극 노출~응답 클릭 총 시간 (타이핑 시간 포함) |
 | `{ID}_chunk_times` | Type B 청크별 시간, `\|` 구분. 예: `5200\|8100\|6500\|9800`. Type A 는 빈 값. |
 | `tlx_mental_demand`, `tlx_effort`, `tlx_frustration` | 1~7 |
-| `interview_1`, `interview_2`, `interview_3` | 자유응답 |
+| `interview_1` | 신뢰 판단 기준 (객관식 1개 선택: `출처` / `구체적 수치` / `논리 흐름` / `기타: {직접입력}`) |
+| `interview_2`, `interview_3` | 자유응답 |
 | `total_duration_ms` | 실험 전체 소요 시간 |
 
 > **분석 시 참고**: `total_time_ms` 와 `chunk_times` 에는 LLM 타이핑 효과 동안의 시간도 포함되어 있습니다. 글자당 약 18ms (기본값) × 청크 글자수 만큼의 고정 비용이 발생합니다. 순수 "사용자 사고 시간"이 필요하면 타이핑 시간을 차감해서 사용하세요. `experiment.js` 의 `TYPING_SPEED_MS_PER_CHAR` 값을 조정하여 속도를 바꿀 수 있습니다.
@@ -221,8 +222,8 @@ const CONFIG = {
 ```js
 const CONFIG = {
   WEB_APP_URL: '...',
-  MIN_RESPONSE_TIME_MS: 5000,         // 응답 버튼 활성화까지 최소 시간
-  MIN_CHUNK_TIME_MS: 3000,            // Type B 청크당 최소 노출 시간
+  MIN_RESPONSE_TIME_MS: 3000,         // 응답 버튼 활성화까지 최소 시간
+  MIN_CHUNK_TIME_MS: 1500,            // Type B 청크당 최소 노출 시간
   TYPING_SPEED_MS_PER_CHAR: 18,       // LLM 타이핑 속도
   TYPING_PUNCTUATION_PAUSE_MS: 80,    // 구두점 뒤 추가 멈춤
   TYPE_A_CHUNK_GAP_MS: 350,           // Type A 청크 간 간격
