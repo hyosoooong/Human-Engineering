@@ -267,8 +267,15 @@
     </div>
 
     <div class="form-group">
-      <label class="field-label" for="interview2">2. 일부 텍스트에서 시각적으로 다르게 보이는 부분(예: 흐리게 표시된 문장)이 있었나요? 있었다면 그것이 본인의 판단에 영향을 미쳤나요?</label>
-      <textarea id="interview2" placeholder="자유롭게 작성해 주세요"></textarea>
+      <label class="field-label">2. 실험을 진행하면서, AI가 제시한 정보를 점점 더 비판적으로(주의 깊게) 검토하게 되었나요?</label>
+      <div class="radio-list">
+        <label><input type="radio" name="interview2" value="더 비판적"> 뒤로 갈수록 더 비판적으로 검토하게 되었다</label>
+        <label><input type="radio" name="interview2" value="다소 비판적"> 어느 정도 그런 편이었다</label>
+        <label><input type="radio" name="interview2" value="변화 없음"> 처음과 비슷하게 검토했다 (큰 변화 없음)</label>
+        <label><input type="radio" name="interview2" value="덜 신경 씀"> 뒤로 갈수록 오히려 덜 신경 쓰게 되었다</label>
+        <label><input type="radio" name="interview2" value="기타"> 기타</label>
+      </div>
+      <input type="text" id="interview2Other" placeholder="기타: 직접 입력해 주세요" style="display:none;">
     </div>
 
     <div class="form-group">

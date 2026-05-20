@@ -32,10 +32,13 @@ const CONFIG = {
   // 자극 응답 버튼이 활성화되기까지의 최소 시간(ms)
   // - Type A: 모든 청크 타이핑 완료 후부터 카운트
   // - Type B: 마지막 청크 타이핑 완료 후부터 카운트
-  MIN_RESPONSE_TIME_MS: 3000,
+  MIN_RESPONSE_TIME_MS: 1000,
 
-  // Type B 중간 청크 타이핑 완료 후 "다음 단계 보기" 활성화까지의 최소 시간(ms)
-  MIN_CHUNK_TIME_MS: 1500,
+  // Type B 마지막 청크 타이핑 완료 후 응답 버튼 활성화까지의 최소 시간(ms)
+  MIN_CHUNK_TIME_MS: 1000,
+
+  // Type B 중간 청크 타이핑 완료 후 "다음 단계 보기" 버튼 활성화까지의 최소 시간(ms)
+  MIN_NEXT_CHUNK_TIME_MS: 500,
 
   // LLM 타이핑 효과: 글자당 노출 간격(ms). 작을수록 빠름.
   TYPING_SPEED_MS_PER_CHAR: 18,
@@ -218,13 +221,15 @@ function bindEvents() {
   $('tlxNextBtn').addEventListener('click', handleTlxSubmit);
   $('interviewSubmitBtn').addEventListener('click', handleInterviewSubmit);
 
-  // 사후 1번 '기타' 선택 시 직접 입력란 표시/숨김
-  document.querySelectorAll('input[name="interview1"]').forEach(el => {
-    el.addEventListener('change', () => {
-      const otherInput = $('interview1Other');
-      const isOther = el.value === '기타' && el.checked;
-      otherInput.style.display = isOther ? 'block' : 'none';
-      if (isOther) otherInput.focus();
+  // 사후 1·2번 '기타' 선택 시 직접 입력란 표시/숨김
+  [['interview1', 'interview1Other'], ['interview2', 'interview2Other']].forEach(([name, otherId]) => {
+    document.querySelectorAll(`input[name="${name}"]`).forEach(el => {
+      el.addEventListener('change', () => {
+        const otherInput = $(otherId);
+        const isOther = el.value === '기타' && el.checked;
+        otherInput.style.display = isOther ? 'block' : 'none';
+        if (isOther) otherInput.focus();
+      });
     });
   });
 
@@ -364,7 +369,7 @@ async function renderTypeB_chunk(stim, chunkIdx) {
     $('nextChunkBtn').style.display = 'inline-block';
     setTimeout(() => {
       $('nextChunkBtn').disabled = false;
-    }, CONFIG.MIN_CHUNK_TIME_MS);
+    }, CONFIG.MIN_NEXT_CHUNK_TIME_MS);
   }
 
   debugLog(`Type B 자극 ${stim.id} 청크 ${chunkIdx} 타이핑 완료`);
@@ -374,31 +379,36 @@ async function renderTypeB_chunk(stim, chunkIdx) {
 async function appendChunkWithTyping(chunk, applyFade) {
   const container = $('chunksContainer');
 
-  // 소제목(태그) 없이 줄글 형태로 표시 — 청크를 인라인으로 이어붙여 하나의 문단처럼 읽히게 함
+  // 소제목(태그) 없이 줄글 형태로 표시.
+  // - Type A: 청크를 인라인으로 이어붙여 하나의 문단처럼 연속 표시
+  // - Type B: 단계별 노출이 잘 드러나도록 청크마다 줄바꿈(블록)하여 표시
   const isFirst = container.childElementCount === 0;
+  const isStepwise = (state.condition === 'B');
 
-  const span = document.createElement('span');
-  span.className = 'ai-chunk' + (applyFade && chunk.isError ? ' chunk-faded' : '');
-  span.style.opacity = '0';
+  const wrap = document.createElement(isStepwise ? 'div' : 'span');
+  wrap.className = 'ai-chunk'
+    + (isStepwise ? ' ai-chunk-block' : '')
+    + (applyFade && chunk.isError ? ' chunk-faded' : '');
+  wrap.style.opacity = '0';
 
   const textEl = document.createElement('span');
   textEl.className = 'ai-chunk-text';
 
-  // 첫 청크가 아니면 앞선 문장과의 간격을 위해 공백을 둠
-  if (!isFirst) {
+  // Type A(연속 줄글)에서 첫 청크가 아니면 앞선 문장과의 간격을 위해 공백을 둠
+  if (!isFirst && !isStepwise) {
     textEl.appendChild(document.createTextNode(' '));
   }
 
-  span.appendChild(textEl);
-  container.appendChild(span);
+  wrap.appendChild(textEl);
+  container.appendChild(wrap);
 
   // 페이드인 트리거
   requestAnimationFrame(() => {
-    span.style.opacity = '';
+    wrap.style.opacity = '';
   });
 
   // 자동 스크롤 (마지막 청크가 보이도록)
-  span.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
   // 페이드인이 시작될 짧은 여유 후 타이핑
   await sleep(120);
@@ -506,29 +516,39 @@ function handleTlxSubmit() {
   showPage('page-interview');
 }
 
+// 객관식(라디오) 응답을 읽되 '기타' 선택 시 직접 입력값을 사용.
+// 미응답/기타 미입력이면 오류 메시지를 띄우고 null 반환.
+function readRadioWithOther(name, otherId, labelText) {
+  const errEl = $('interviewError');
+  const el = document.querySelector(`input[name="${name}"]:checked`);
+  if (!el) {
+    if (errEl) errEl.textContent = `${labelText} 문항을 선택해 주세요.`;
+    return null;
+  }
+  if (el.value === '기타') {
+    const otherText = $(otherId).value.trim();
+    if (!otherText) {
+      if (errEl) errEl.textContent = `'기타'를 선택하신 경우 ${labelText} 내용을 입력해 주세요.`;
+      return null;
+    }
+    return '기타: ' + otherText;
+  }
+  return el.value;
+}
+
 function handleInterviewSubmit() {
   const errEl = $('interviewError');
   if (errEl) errEl.textContent = '';
 
-  // 1번: 객관식(라디오). '기타' 선택 시 직접 입력값을 사용.
-  const q1El = document.querySelector('input[name="interview1"]:checked');
-  if (!q1El) {
-    if (errEl) errEl.textContent = '1번 문항을 선택해 주세요.';
-    return;
-  }
-  let q1Value = q1El.value;
-  if (q1Value === '기타') {
-    const otherText = $('interview1Other').value.trim();
-    if (!otherText) {
-      if (errEl) errEl.textContent = "'기타'를 선택하신 경우 내용을 입력해 주세요.";
-      return;
-    }
-    q1Value = '기타: ' + otherText;
-  }
+  // 1·2번: 객관식(라디오, 필수). 3번: 자유응답(선택).
+  const q1Value = readRadioWithOther('interview1', 'interview1Other', '1번');
+  if (q1Value === null) return;
+  const q2Value = readRadioWithOther('interview2', 'interview2Other', '2번');
+  if (q2Value === null) return;
 
   state.data.interview = {
     q1: q1Value,
-    q2: $('interview2').value.trim(),
+    q2: q2Value,
     q3: $('interview3').value.trim()
   };
   state.experimentCompleted = true;

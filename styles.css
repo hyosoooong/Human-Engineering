@@ -82,13 +82,13 @@ small { color: #6c757d; }
   display: inline-block;
   background: #f59e0b;
   color: #fff;
-  font-size: 0.8rem;
-  font-weight: 700;
-  padding: 3px 12px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  padding: 5px 16px;
   border-radius: 10px;
-  margin-right: 10px;
+  margin-right: 12px;
   vertical-align: middle;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
 }
 .scenario-box #scenarioText {
   vertical-align: middle;
@@ -154,6 +154,14 @@ small { color: #6c757d; }
   white-space: pre-wrap;
   word-break: keep-all;
   display: inline;
+}
+/* Type B: 단계별 노출이 드러나도록 청크마다 줄바꿈(문단 간격) */
+.ai-chunk-block {
+  display: block;
+  margin-top: 0.85em;
+}
+.ai-chunk-block:first-child {
+  margin-top: 0;
 }
 .chunk-faded {
   opacity: 0.35;
@@ -334,7 +342,8 @@ label {
   margin: 0;
   accent-color: #2c7da0;
 }
-#interview1Other {
+#interview1Other,
+#interview2Other {
   width: 100%;
   margin-top: 8px;
 }

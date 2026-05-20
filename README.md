@@ -156,7 +156,8 @@ const CONFIG = {
 | `{ID}_chunk_times` | Type B 청크별 시간, `\|` 구분. 예: `5200\|8100\|6500\|9800`. Type A 는 빈 값. |
 | `tlx_mental_demand`, `tlx_effort`, `tlx_frustration` | 1~7 |
 | `interview_1` | 신뢰 판단 기준 (객관식 1개 선택: `출처` / `구체적 수치` / `논리 흐름` / `기타: {직접입력}`) |
-| `interview_2`, `interview_3` | 자유응답 |
+| `interview_2` | 학습효과(시행 반복에 따른 비판적 검토 변화) 객관식 1개 선택 (`더 비판적` / `다소 비판적` / `변화 없음` / `덜 신경 씀` / `기타: {직접입력}`) |
+| `interview_3` | 자유응답 |
 | `total_duration_ms` | 실험 전체 소요 시간 |
 
 > **분석 시 참고**: `total_time_ms` 와 `chunk_times` 에는 LLM 타이핑 효과 동안의 시간도 포함되어 있습니다. 글자당 약 18ms (기본값) × 청크 글자수 만큼의 고정 비용이 발생합니다. 순수 "사용자 사고 시간"이 필요하면 타이핑 시간을 차감해서 사용하세요. `experiment.js` 의 `TYPING_SPEED_MS_PER_CHAR` 값을 조정하여 속도를 바꿀 수 있습니다.
@@ -222,8 +223,9 @@ const CONFIG = {
 ```js
 const CONFIG = {
   WEB_APP_URL: '...',
-  MIN_RESPONSE_TIME_MS: 3000,         // 응답 버튼 활성화까지 최소 시간
-  MIN_CHUNK_TIME_MS: 1500,            // Type B 청크당 최소 노출 시간
+  MIN_RESPONSE_TIME_MS: 1000,         // (Type A) 응답 버튼 활성화까지 최소 시간
+  MIN_CHUNK_TIME_MS: 1000,            // (Type B) 마지막 청크 후 응답 버튼 활성화 최소 시간
+  MIN_NEXT_CHUNK_TIME_MS: 500,        // (Type B) "다음 단계 보기" 버튼 활성화 최소 시간
   TYPING_SPEED_MS_PER_CHAR: 18,       // LLM 타이핑 속도
   TYPING_PUNCTUATION_PAUSE_MS: 80,    // 구두점 뒤 추가 멈춤
   TYPE_A_CHUNK_GAP_MS: 350,           // Type A 청크 간 간격
