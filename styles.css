@@ -307,8 +307,17 @@ label {
   accent-color: #2c7da0;
 }
 
+/* 척도 버튼은 개수(5개/7개)와 무관하게 항상 한 줄에 균등 배치 */
+.likert-7 {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 8px;
+}
 .likert-7 label {
-  min-width: 38px;
+  min-width: 0;
+  padding-left: 4px;
+  padding-right: 4px;
   justify-content: center;
 }
 
@@ -453,8 +462,13 @@ label {
     padding: 6px 10px;
     font-size: 0.88rem;
   }
+  .likert-7 {
+    gap: 5px;
+  }
   .likert-7 label {
-    min-width: 34px;
+    min-width: 0;
+    padding: 7px 2px;
+    font-size: 0.85rem;
   }
 
   /* 터치 영역 확보 (iOS 권장 44px) */

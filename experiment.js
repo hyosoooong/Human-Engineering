@@ -168,7 +168,7 @@ function init() {
   // 참가자/조건 배정
   state.participantId = generateParticipantId();
   state.condition = decideCondition();
-  state.stimulusOrder = shuffle(STIMULI);
+  state.stimulusOrder = shuffle(getStimuliForCondition(state.condition));
   state.experimentStartTime = Date.now();
 
   debugLog('participant', state.participantId);
@@ -274,7 +274,7 @@ function handleNfcSubmit() {
   errEl.textContent = '';
 
   const nfc = {};
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= 15; i++) {
     const el = document.querySelector(`input[name="nfc${i}"]:checked`);
     if (!el) {
       errEl.textContent = '모든 문항에 응답해 주세요.';
@@ -576,6 +576,16 @@ function buildPayload() {
     nfc_3: state.data.nfc[3],
     nfc_4: state.data.nfc[4],
     nfc_5: state.data.nfc[5],
+    nfc_6: state.data.nfc[6],
+    nfc_7: state.data.nfc[7],
+    nfc_8: state.data.nfc[8],
+    nfc_9: state.data.nfc[9],
+    nfc_10: state.data.nfc[10],
+    nfc_11: state.data.nfc[11],
+    nfc_12: state.data.nfc[12],
+    nfc_13: state.data.nfc[13],
+    nfc_14: state.data.nfc[14],
+    nfc_15: state.data.nfc[15],
     stimulus_order: state.stimulusOrder.map(s => s.id).join(','),
     tlx_mental_demand: state.data.tlx.mental,
     tlx_effort: state.data.tlx.effort,
