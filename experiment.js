@@ -4,7 +4,7 @@
  *
  * 페이지 흐름:
  *   page-welcome → page-demographics → page-nfc → page-instructions
- *   → page-stimulus (6회 반복) → page-tlx → page-interview → page-debrief
+ *   → page-stimulus (8회 반복) → page-tlx → page-interview → page-debrief
  *
  * 조건 배정:
  *   typeA.html / typeB.html 이 <script>window.FORCED_CONDITION='A'|'B'</script>
@@ -120,7 +120,7 @@ function decideCondition() {
 /* =========================================================
  * 4. 페이지 전환 + 진행률
  * ========================================================= */
-const TOTAL_STEPS = 13; // 사전 4 + 자극 6 + 사후 3
+const TOTAL_STEPS = 15; // 사전 4 + 자극 8 + 사후 3
 
 function getStepIndex(pageId) {
   if (pageId === 'page-welcome') return 0;
@@ -128,9 +128,9 @@ function getStepIndex(pageId) {
   if (pageId === 'page-nfc') return 2;
   if (pageId === 'page-instructions') return 3;
   if (pageId === 'page-stimulus') return 4 + state.currentStimulusIdx;
-  if (pageId === 'page-tlx') return 10;
-  if (pageId === 'page-interview') return 11;
-  if (pageId === 'page-debrief') return 12;
+  if (pageId === 'page-tlx') return 12;
+  if (pageId === 'page-interview') return 13;
+  if (pageId === 'page-debrief') return 14;
   return 0;
 }
 
@@ -595,7 +595,7 @@ function buildPayload() {
     interview_3: state.data.interview.q3,
     total_duration_ms: totalDuration
   };
-  ['S1', 'S2', 'S3', 'N1', 'N2', 'N3'].forEach(id => {
+  ['S1', 'S2', 'S3', 'S4', 'N1', 'N2', 'N3', 'N4'].forEach(id => {
     const r = state.responses[id] || {};
     payload[`${id}_response`] = r.response || '';
     payload[`${id}_total_time_ms`] = r.total_time_ms != null ? r.total_time_ms : '';
